@@ -16,3 +16,13 @@ export function getProject(slug: string, locale: Locale) {
     summary: project.locales[locale].summary
   };
 }
+
+export function getFeaturedProjects(locale: Locale) {
+  return projects
+    .filter((entry) => entry.featured)
+    .map((project) => ({
+      slug: project.slug,
+      title: project.locales[locale].title,
+      summary: project.locales[locale].summary
+    }));
+}
