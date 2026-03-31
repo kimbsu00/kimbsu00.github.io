@@ -13,13 +13,25 @@ export function getProject(slug: string, locale: Locale) {
     featured: project.featured,
     locale,
     title: project.locales[locale].title,
-    summary: project.locales[locale].summary
+    summary: project.locales[locale].summary,
+    detailsAvailable: project.locales[locale].detailsAvailable,
+    highlights: [...project.locales[locale].highlights]
   };
 }
 
 export function getFeaturedProjects(locale: Locale) {
   return projects
     .filter((entry) => entry.featured)
+    .map((project) => ({
+      slug: project.slug,
+      title: project.locales[locale].title,
+      summary: project.locales[locale].summary
+    }));
+}
+
+export function getArchiveProjects(locale: Locale) {
+  return projects
+    .filter((entry) => !entry.featured)
     .map((project) => ({
       slug: project.slug,
       title: project.locales[locale].title,

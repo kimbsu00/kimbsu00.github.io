@@ -8,5 +8,7 @@ test("renderHome includes locale switcher, hero copy, and featured projects", ()
   assert.match(html, /data-locale-switcher/);
   assert.match(html, /안드로이드 앱 개발자/);
   assert.match(html, /주요 프로젝트/);
+  assert.match(html, /경력/);
+  assert.match(html, /연락처/);
   assert.match(html, /Mobit/);
 });

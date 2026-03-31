@@ -16,11 +16,13 @@ test("parseRoute resolves english project detail paths", () => {
 });
 
 test("getProject returns english project copy", () => {
-  assert.deepEqual(getProject("mobit", "en"), {
-    slug: "mobit",
-    featured: true,
-    locale: "en",
-    title: "Mobit",
-    summary: "A cryptocurrency paper-trading app"
-  });
+  const project = getProject("mobit", "en");
+
+  assert.ok(project);
+  assert.equal(project.slug, "mobit");
+  assert.equal(project.featured, true);
+  assert.equal(project.locale, "en");
+  assert.equal(project.title, "Mobit");
+  assert.equal(project.summary, "A cryptocurrency paper-trading app");
+  assert.equal(project.detailsAvailable, false);
 });

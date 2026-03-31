@@ -2,3 +2,6 @@
 node_modules
 dist
 dist-test
+ko/
+en/
+404.html

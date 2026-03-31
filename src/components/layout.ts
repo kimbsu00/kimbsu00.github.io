@@ -3,8 +3,18 @@ import type { Locale } from "../lib/routes.js";
 export function renderLayout(locale: Locale, content: string) {
   const labels =
     locale === "ko"
-      ? { home: "홈", work: "프로젝트", switchLabel: "언어" }
-      : { home: "Home", work: "Projects", switchLabel: "Language" };
+      ? {
+          experience: "경력",
+          work: "프로젝트",
+          contact: "연락처",
+          switchLabel: "언어"
+        }
+      : {
+          experience: "Experience",
+          work: "Projects",
+          contact: "Contact",
+          switchLabel: "Language"
+        };
 
   return `
     <div class="site-shell">
@@ -12,7 +22,8 @@ export function renderLayout(locale: Locale, content: string) {
         <a class="site-mark" href="/${locale}/">Kim ByeongSu</a>
         <nav class="site-nav">
           <a href="/${locale}/#featured-projects">${labels.work}</a>
-          <a href="/${locale}/#contact">${labels.home}</a>
+          <a href="/${locale}/#experience">${labels.experience}</a>
+          <a href="/${locale}/#contact">${labels.contact}</a>
         </nav>
         <div class="locale-switcher" data-locale-switcher>
           <span>${labels.switchLabel}</span>
