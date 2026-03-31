@@ -1,0 +1,18 @@
+:root {
+  color: #1b1f23;
+  background: #f7f3ec;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+#app {
+  padding: 48px 24px;
+}
