@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
+    "pretest": "rm -rf dist-test && tsc --outDir dist-test --rootDir src --module ESNext --target ES2022 --moduleResolution Bundler src/lib/routes.ts src/lib/content.ts src/content/site.ts src/content/projects.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --test"
   },
