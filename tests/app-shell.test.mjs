@@ -6,6 +6,8 @@ test("renderHome includes locale switcher, hero copy, and featured projects", ()
   const html = renderHome("ko");
 
   assert.match(html, /data-locale-switcher/);
+  assert.match(html, /section-label/);
+  assert.match(html, /hero-notes/);
   assert.match(html, /안드로이드 앱 개발자/);
   assert.match(html, /주요 프로젝트/);
   assert.match(html, /경력/);
