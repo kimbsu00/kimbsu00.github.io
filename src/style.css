@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap");
 
 :root {
   --paper: #f5f0e8;
@@ -10,7 +11,7 @@
   --accent: #8b5e3c;
   color: var(--ink);
   background: var(--paper);
-  font-family: "Source Sans 3", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-family: "Pretendard", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
 }
 
 * {
@@ -57,9 +58,10 @@ a {
 }
 
 .site-mark {
-  font-family: "Noto Serif KR", Georgia, serif;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 1.05rem;
   letter-spacing: 0.04em;
+  font-weight: 700;
 }
 
 .site-nav {
@@ -95,9 +97,9 @@ a {
 
 .hero h1 {
   margin: 0 0 8px;
-  font-family: "Noto Serif KR", Georgia, serif;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
   font-size: clamp(3rem, 7vw, 5.2rem);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.02;
 }
 
@@ -156,9 +158,9 @@ a {
 
 .section-header h2 {
   margin: 0;
-  font-family: "Noto Serif KR", Georgia, serif;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.2;
 }
 
@@ -181,8 +183,8 @@ a {
 .mini-card h3,
 .project-detail h1 {
   margin: 0;
-  font-family: "Noto Serif KR", Georgia, serif;
-  font-weight: 600;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  font-weight: 700;
 }
 
 .project-card p {
