@@ -33,7 +33,7 @@ export const siteContent = {
       },
       {
         label: "Blog",
-        href: "https://kimbsu00.oopy.io/",
+        href: "https://velog.io/@kimbsu00",
         display: "@kimbsu00"
       }
     ]
@@ -72,7 +72,7 @@ export const siteContent = {
       },
       {
         label: "Blog",
-        href: "https://kimbsu00.oopy.io/",
+        href: "https://velog.io/@kimbsu00",
         display: "Portfolio Blog"
       }
     ]
