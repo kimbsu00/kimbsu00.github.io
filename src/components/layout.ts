@@ -1,0 +1,37 @@
+import type { Locale } from "../lib/routes.js";
+
+export function renderLayout(locale: Locale, content: string) {
+  const labels =
+    locale === "ko"
+      ? {
+          experience: "경력",
+          work: "프로젝트",
+          contact: "연락처",
+          switchLabel: "언어"
+        }
+      : {
+          experience: "Experience",
+          work: "Projects",
+          contact: "Contact",
+          switchLabel: "Language"
+        };
+
+  return `
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="site-mark" href="/${locale}/">Kim ByeongSu</a>
+        <nav class="site-nav">
+          <a href="/${locale}/#featured-projects">${labels.work}</a>
+          <a href="/${locale}/#experience">${labels.experience}</a>
+          <a href="/${locale}/#contact">${labels.contact}</a>
+        </nav>
+        <div class="locale-switcher" data-locale-switcher>
+          <span>${labels.switchLabel}</span>
+          <a href="/ko/">KO</a>
+          <a href="/en/">EN</a>
+        </div>
+      </header>
+      <main>${content}</main>
+    </div>
+  `;
+}

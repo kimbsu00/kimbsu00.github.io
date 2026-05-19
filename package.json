@@ -1,0 +1,21 @@
+{
+  "name": "kimbsu00.github.io",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "generate:routes": "node scripts/generate-route-pages.mjs",
+    "predev": "npm run generate:routes",
+    "dev": "vite",
+    "prebuild": "npm run generate:routes",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "pretest": "rm -rf dist-test && tsc --outDir dist-test --rootDir src --module ESNext --target ES2022 --moduleResolution Bundler src/lib/routes.ts src/lib/content.ts src/content/site.ts src/content/projects.ts src/components/layout.ts src/components/hero.ts src/components/section.ts src/components/project-card.ts src/components/project-detail.ts src/app.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vite": "^6.4.0"
+  }
+}
