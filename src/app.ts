@@ -38,6 +38,14 @@ export function renderHome(locale: Locale) {
       })
     )
     .join("");
+  const archiveSection =
+    archiveProjects.length === 0
+      ? ""
+      : renderSection(
+          "project-archive",
+          copy.sectionLabels.projectArchive,
+          `<div class="project-grid">${archiveProjects}</div>`
+        );
   const experienceMarkup = experience
     .map((entry) => {
       const localized = entry.locales[locale];
@@ -122,11 +130,7 @@ export function renderHome(locale: Locale) {
           </div>
         </div>`
       )}
-      ${renderSection(
-        "project-archive",
-        copy.sectionLabels.projectArchive,
-        `<div class="project-grid">${archiveProjects}</div>`
-      )}
+      ${archiveSection}
       ${renderSection(
         "contact",
         copy.sectionLabels.contact,

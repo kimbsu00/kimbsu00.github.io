@@ -2,15 +2,17 @@ export const siteContent = {
   ko: {
     name: "김병수",
     englishName: "ByeongSu Kim",
-    role: "안드로이드 앱 개발자",
+    role: "Software Engineer",
     heroSummary:
-      "기술의 작동 원리를 이해하고, 팀의 목표를 공유하며, 문제 해결 경험을 적극적으로 나누는 안드로이드 개발자입니다.",
-    valueStatements: [
-      "기술의 작동 원리를 알아가는 것을 좋아합니다.",
-      "목표를 공유하는 것을 좋아합니다.",
-      "문제 상황에 대해 고민하고 논의하는 것을 좋아합니다."
+      "차량용 내비게이션과 Android 제품 개발 경험을 바탕으로, 구조 설계와 성능 개선을 함께 다루는 개발자입니다.",
+    portfolioNote:
+      "본 페이지는 한국어로 작성된 포트폴리오를 바탕으로 구성되었으며, 영어 페이지는 같은 내용을 간결하게 옮긴 버전입니다.",
+    focusPoints: [
+      "현대오토에버 차량용 내비게이션 개발",
+      "다이닝코드 Android 앱 기능 개발 및 구조 개선",
+      "PAD-AI 데이터 수집 앱 개발"
     ],
-    availabilityLabel: "한국어에서만 자세한 내용을 볼 수 있습니다.",
+    availabilityLabel: "한국어에서만 더 자세한 설명을 볼 수 있습니다.",
     sectionLabels: {
       featuredProjects: "주요 프로젝트",
       experience: "경력",
@@ -41,13 +43,15 @@ export const siteContent = {
   en: {
     name: "Kim ByeongSu",
     englishName: "ByeongSu Kim",
-    role: "Android Developer",
+    role: "Software Engineer",
     heroSummary:
-      "An Android developer who values system-level understanding, shared goals, and open discussion around real engineering problems.",
-    valueStatements: [
-      "I like understanding how technology actually works.",
-      "I like working with teams that share a clear goal.",
-      "I like documenting and discussing real problem-solving processes."
+      "An engineer with Android product and in-vehicle navigation experience, focused on system structure, rendering performance, and delivery quality.",
+    portfolioNote:
+      "This site mirrors the current Korean portfolio. The English version stays aligned with the same verified project scope in a more concise form.",
+    focusPoints: [
+      "In-vehicle navigation development at Hyundai AutoEver",
+      "Android product work and architecture cleanup at DiningCode",
+      "PAD-AI data collection app development"
     ],
     availabilityLabel: "Available in Korean only",
     sectionLabels: {

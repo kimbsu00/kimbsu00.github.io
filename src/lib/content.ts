@@ -8,14 +8,42 @@ export function getProject(slug: string, locale: Locale) {
     return null;
   }
 
+  const localized = project.locales[locale];
+
   return {
     slug: project.slug,
     featured: project.featured,
     locale,
-    title: project.locales[locale].title,
-    summary: project.locales[locale].summary,
-    detailsAvailable: project.locales[locale].detailsAvailable,
-    highlights: [...project.locales[locale].highlights]
+    title: localized.title,
+    summary: localized.detailSummary,
+    detailsAvailable: localized.detailsAvailable,
+    organization: localized.organization,
+    period: localized.period,
+    detailSections: localized.detailSections.map((section) => ({
+      title: section.title,
+      blocks: section.blocks.map((block) => {
+        switch (block.type) {
+          case "paragraph":
+            return { ...block };
+          case "bullet-list":
+            return { type: block.type, items: [...block.items] };
+          case "image":
+            return { type: block.type, image: { ...block.image } };
+          case "image-row":
+            return {
+              type: block.type,
+              images: block.images.map((image) => ({ ...image }))
+            };
+          case "link-list":
+            return {
+              type: block.type,
+              links: block.links.map((link) => ({ ...link }))
+            };
+          case "divider":
+            return { type: block.type };
+        }
+      })
+    }))
   };
 }
 
@@ -25,7 +53,7 @@ export function getFeaturedProjects(locale: Locale) {
     .map((project) => ({
       slug: project.slug,
       title: project.locales[locale].title,
-      summary: project.locales[locale].summary
+      summary: project.locales[locale].cardSummary
     }));
 }
 
@@ -35,6 +63,6 @@ export function getArchiveProjects(locale: Locale) {
     .map((project) => ({
       slug: project.slug,
       title: project.locales[locale].title,
-      summary: project.locales[locale].summary
+      summary: project.locales[locale].cardSummary
     }));
 }

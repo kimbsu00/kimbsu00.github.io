@@ -1,0 +1,12 @@
+[Goal]
+Change below website contents to website for github io.
+https://kimbsu00.oopy.io/portfolio
+
+[Pre-requisition]
+- Hierarchy knowledge of below website
+  - https://kimbsu00.oopy.io/portfolio
+- Familiarity with github io website
+  - You have to know what we should prepare for creating github io website
+
+[Rule]
+- Before you start working, you have to write plan as md file

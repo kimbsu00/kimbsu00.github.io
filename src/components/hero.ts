@@ -3,10 +3,10 @@ import type { Locale } from "../lib/routes.js";
 
 export function renderHero(locale: Locale) {
   const copy = siteContent[locale];
-  const valueStatements = copy.valueStatements
+  const focusPoints = copy.focusPoints
     .map((item) => `<li>${item}</li>`)
     .join("");
-  const notesLabel = locale === "ko" ? "Editorial Notes" : "Editorial Notes";
+  const notesLabel = locale === "ko" ? "포트폴리오 노트" : "Portfolio Notes";
 
   return `
     <section class="hero">
@@ -18,7 +18,8 @@ export function renderHero(locale: Locale) {
       </div>
       <aside class="hero-notes">
         <p class="section-label">${notesLabel}</p>
-        <ul class="hero-values">${valueStatements}</ul>
+        <p class="hero-summary">${copy.portfolioNote}</p>
+        <ul class="hero-values">${focusPoints}</ul>
       </aside>
     </section>
   `;

@@ -36,6 +36,16 @@ a {
   text-decoration: none;
 }
 
+code {
+  padding: 0.12em 0.34em;
+  border: 1px solid rgba(37, 99, 235, 0.14);
+  border-radius: 6px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #1d4ed8;
+  font-family: "SFMono-Regular", "Consolas", monospace;
+  font-size: 0.92em;
+}
+
 .site-shell {
   width: min(1080px, calc(100% - 40px));
   margin: 0 auto;
@@ -235,16 +245,119 @@ a {
   padding: 72px 0 48px;
 }
 
+.project-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin: 24px 0 28px;
+}
+
+.project-meta div {
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--card-rule);
+}
+
+.project-meta dt {
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.project-meta dd {
+  margin: 0;
+  font-weight: 600;
+}
+
 .project-summary,
 .language-note {
   max-width: 680px;
   line-height: 1.65;
 }
 
+.project-section {
+  margin-top: 28px;
+}
+
+.project-section h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.project-section p {
+  margin: 0 0 12px;
+  line-height: 1.65;
+}
+
+.project-figure {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 16px;
+}
+
+.project-figure img {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--card-rule);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.project-figure figcaption {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.project-image-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 0 0 16px;
+}
+
+.project-image-row .project-figure {
+  margin-bottom: 0;
+}
+
+.project-link-list {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.project-link-list a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.project-divider {
+  margin: 28px 0;
+  border: 0;
+  border-top: 1px solid var(--rule);
+}
+
+.project-stack,
 .project-highlights {
   display: grid;
   gap: 12px;
   padding-left: 20px;
+}
+
+.project-stack {
+  grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
+  gap: 10px 14px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.project-stack li {
+  width: fit-content;
+  padding: 8px 12px;
+  border: 1px solid var(--card-rule);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.55);
 }
 
 .contact-lead {
