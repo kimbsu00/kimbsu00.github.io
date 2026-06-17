@@ -14,7 +14,7 @@ test("renderHome includes locale switcher, hero copy, and featured projects", ()
   assert.match(html, /경력/);
   assert.match(html, /연락처/);
   assert.match(html, /Connect-S\/L 플랫폼 내비게이션 앱 개발/);
-  assert.match(html, /3rd SDK 내비게이션 앱 개발/);
+  assert.match(html, /HERE SDK 기반 3rd-party 내비게이션 PoC/);
   assert.match(html, /다이닝코드 안드로이드 앱 개발/);
   assert.match(html, /PAD-AI/);
   assert.doesNotMatch(html, /Mobit/);

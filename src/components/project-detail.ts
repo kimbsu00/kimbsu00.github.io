@@ -9,7 +9,9 @@ type ProjectMediaImage = {
 
 type ProjectDetailBlock =
   | { type: "paragraph"; text: string }
+  | { type: "subheading"; text: string }
   | { type: "bullet-list"; items: string[] }
+  | { type: "code-block"; language?: string; code: string }
   | { type: "image"; image: ProjectMediaImage }
   | { type: "image-row"; images: ProjectMediaImage[] }
   | { type: "link-list"; links: { label: string; href: string }[] }
@@ -60,10 +62,16 @@ function renderDetailBlock(block: ProjectDetailBlock) {
   switch (block.type) {
     case "paragraph":
       return `<p>${renderInlineText(block.text)}</p>`;
+    case "subheading":
+      return `<h3>${renderInlineText(block.text)}</h3>`;
     case "bullet-list":
       return `<ul class="project-highlights">${block.items
         .map((item) => `<li>${renderInlineText(item)}</li>`)
         .join("")}</ul>`;
+    case "code-block": {
+      const languageClass = block.language ? ` class="language-${escapeHtml(block.language)}"` : "";
+      return `<pre><code${languageClass}>${escapeHtml(block.code)}</code></pre>`;
+    }
     case "image":
       return renderImageFigure(block.image);
     case "image-row":
