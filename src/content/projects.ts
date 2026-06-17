@@ -11,7 +11,9 @@ type ProjectDetailLink = {
 
 type ProjectDetailBlock =
   | { type: "paragraph"; text: string }
+  | { type: "subheading"; text: string }
   | { type: "bullet-list"; items: string[] }
+  | { type: "code-block"; language?: string; code: string }
   | { type: "image"; image: ProjectMediaImage }
   | { type: "image-row"; images: ProjectMediaImage[] }
   | { type: "link-list"; links: ProjectDetailLink[] }
@@ -353,18 +355,18 @@ export const projects = [
     featured: true,
     locales: {
       ko: {
-        title: "3rd SDK 내비게이션 앱 개발",
+        title: "HERE SDK 기반 3rd-party 내비게이션 PoC",
         cardSummary: "HERE SDK를 활용한 내비게이션 앱 개발 PoC 프로젝트",
         detailSummary:
-          "HERE SDK를 활용해 3rd-party navigation SDK 기반 앱 개발 가능성을 검증하는 PoC 프로젝트입니다.",
+          "HERE SDK 기반 지도 표시 모듈을 설계하고 Android 내비게이션 앱에 통합해 3rd-party 내비게이션 SDK 적용 가능성을 검증한 PoC 프로젝트입니다.",
         detailsAvailable: true,
         organization: "현대오토에버",
         period: "2026.03 - 진행중",
-        stack: ["Kotlin", "Android", "HERE SDK"],
+        stack: ["Kotlin", "Android", "HERE SDK", "Maven"],
         highlights: [
-          "HERE SDK 기반 내비게이션 개발",
-          "지도 표시 모듈 개발 리딩",
-          "지도 표시 모듈 maven 배포 환경 구축"
+          "Mapbox 기준 지도 표시 인터페이스에 대응하는 HERE SDK 구현체 설계",
+          "동시 카메라 애니메이션 요청을 병합하는 파이프라인 설계",
+          "지도 표시 모듈 Maven 배포 환경 구축"
         ],
         detailSections: [
           {
@@ -372,11 +374,11 @@ export const projects = [
             blocks: [
               {
                 type: "paragraph",
-                text: "현대오토에버 자체 내비게이션 엔진이 아닌, 타 회사의 내비게이션 SDK(Mapbox, HERE, etc)를 사용하여 내비게이션 앱을 개발하는 프로젝트입니다."
+                text: "현대오토에버 자체 내비게이션 엔진이 아닌, 타사의 내비게이션 SDK를 활용해 내비게이션 앱 개발 가능성을 검증한 PoC 프로젝트입니다. 기존 프로젝트는 Mapbox Maps SDK 기준의 지도 표시 인터페이스를 중심으로 구성되어 있었고, 이 구조를 유지하면서 HERE SDK 기반 구현체를 설계하고 Android 내비게이션 앱에 통합하는 것이 핵심 목표입니다."
               },
               {
                 type: "paragraph",
-                text: "본 프로젝트에서 HERE SDK를 사용하여 내비게이션 앱을 개발하는 PoC 프로젝트를 진행하고 있습니다."
+                text: "이 프로젝트에서 저는 HERE SDK 기반 지도 표시 모듈 개발을 리딩했으며, SDK 차이를 흡수할 수 있는 구현체 설계, 카메라 애니메이션 병합 파이프라인 개선, Maven 배포 환경 구축을 담당했습니다."
               }
             ]
           },
@@ -386,9 +388,10 @@ export const projects = [
               {
                 type: "bullet-list",
                 items: [
-                  "HERE SDK를 활용한 내비게이션 개발",
-                  "지도 표시 모듈 개발 리딩",
-                  "지도 표시 모듈 maven 배포 환경 구축"
+                  "HERE SDK 기반 내비게이션 지도 표시 모듈 개발",
+                  "Mapbox Maps SDK 기준 인터페이스에 대응하는 HERE SDK 구현체 설계",
+                  "HERE SDK 카메라 애니메이션 제약을 고려한 카메라 요청 병합 파이프라인 설계",
+                  "지도 표시 모듈 Maven 배포 환경 구축"
                 ]
               }
             ]
@@ -398,27 +401,354 @@ export const projects = [
             blocks: [
               {
                 type: "bullet-list",
-                items: ["Kotlin", "Android", "HERE SDK", "ClaudeCode"]
+                items: ["Kotlin", "Android", "HERE SDK", "Maven"]
+              }
+            ]
+          },
+          {
+            title: "주요 성과",
+            blocks: [
+              {
+                type: "bullet-list",
+                items: [
+                  "기존 Mapbox 중심 지도 표시 인터페이스를 유지하면서 HERE SDK 구현체를 교체 가능하게 설계",
+                  "동시에 발생한 카메라 애니메이션 요청을 목표 카메라 상태로 병합해 부드러운 지도 이동 구현",
+                  "지도 표시 모듈을 Android 앱 외부에서 재사용할 수 있도록 Maven artifact 배포 환경 구축"
+                ]
+              }
+            ]
+          },
+          {
+            title: "1. Mapbox 기준 인터페이스에 맞춘 HERE SDK 구현체 설계",
+            blocks: [
+              { type: "subheading", text: "배경" },
+              {
+                type: "paragraph",
+                text: "프로젝트의 목표는 특정 SDK에 종속된 앱을 새로 만드는 것이 아니라, 여러 3rd-party 내비게이션 SDK를 적용할 수 있는 구조를 검증하는 것이었습니다. 기존 지도 표시 모듈은 Mapbox Maps SDK를 기준으로 정의된 인터페이스를 사용하고 있었기 때문에, HERE SDK를 적용하더라도 앱 상위 레이어의 호출 방식은 최대한 유지해야 했습니다."
+              },
+              { type: "subheading", text: "문제" },
+              {
+                type: "paragraph",
+                text: "Mapbox Maps SDK와 HERE SDK는 지도 객체, 카메라 상태, 렌더링 생명주기, 이벤트 처리 방식이 서로 다릅니다. SDK API를 앱 코드에 직접 노출하면 HERE SDK를 적용하는 과정에서 상위 모듈까지 함께 변경해야 하고, 이후 다른 SDK를 추가로 검토할 때도 같은 비용이 반복될 수 있었습니다."
+              },
+              {
+                type: "paragraph",
+                text: "따라서 핵심 과제는 단순히 HERE SDK 기능을 호출하는 것이 아니라, 기존 Mapbox 기준 인터페이스와 HERE SDK의 API 차이를 구현체 내부에서 흡수하는 것이었습니다."
+              },
+              { type: "subheading", text: "해결" },
+              {
+                type: "paragraph",
+                text: "기존 지도 표시 인터페이스는 유지하고, HERE SDK 전용 구현체에서 SDK별 차이를 변환하도록 설계했습니다."
+              },
+              {
+                type: "code-block",
+                language: "text",
+                code: "Application / Navigation Logic\n        |\n        v\nMap Display Interface\n        |\n        v\nHERE SDK Implementation\n        |\n        v\nHERE SDK"
+              },
+              {
+                type: "paragraph",
+                text: "상위 레이어는 지도 이동, 축척 변경, 지도 객체 제어와 같은 기능을 기존 인터페이스를 통해 호출하고, HERE SDK 구현체는 이를 HERE SDK의 카메라 및 지도 API 호출로 변환합니다. 이 구조를 통해 앱의 내비게이션 로직이 특정 SDK의 세부 API에 직접 의존하지 않도록 분리했습니다."
+              },
+              { type: "subheading", text: "결과" },
+              {
+                type: "paragraph",
+                text: "기존 Mapbox 기준 구조를 크게 변경하지 않고 HERE SDK를 적용할 수 있는 기반을 만들었습니다. 또한 SDK별 구현체를 분리함으로써 PoC 이후 다른 3rd-party SDK를 검토할 때도 동일한 인터페이스를 기준으로 비교할 수 있는 구조를 확보했습니다."
+              }
+            ]
+          },
+          {
+            title: "2. 카메라 애니메이션 병합 파이프라인 설계",
+            blocks: [
+              { type: "subheading", text: "배경" },
+              {
+                type: "paragraph",
+                text: "내비게이션 지도에서는 사용자의 조작이나 위치 갱신에 따라 지도 중심 좌표, 축척, 회전, 기울기와 같은 상태가 자주 변경됩니다. 이 값들은 각각 별도의 카메라 상태로 관리되지만, 실제 사용자 경험에서는 하나의 연속적인 카메라 애니메이션처럼 자연스럽게 반영되어야 합니다."
+              },
+              {
+                type: "paragraph",
+                text: "예를 들어 현위치 복귀 기능은 단순히 중심 좌표만 바꾸는 것이 아니라, 지도 중심 좌표와 축척, 회전 상태를 함께 갱신해야 자연스럽게 보입니다. 또한 경로 안내 중에는 위치 갱신, 사용자 조작, 안내 상태 변화가 짧은 시간 안에 동시에 발생할 수 있기 때문에 여러 카메라 애니메이션 요청이 겹칠 수 있습니다."
+              },
+              { type: "subheading", text: "문제" },
+              {
+                type: "paragraph",
+                text: "HERE SDK에서는 새로운 카메라 애니메이션이 시작되면 이전 카메라 애니메이션이 취소되는 제약이 있습니다. 따라서 여러 카메라 애니메이션 요청이 거의 동시에 발생하면, 먼저 요청된 애니메이션은 중간에 취소되고 마지막 요청만 성공적으로 반영될 수 있었습니다."
+              },
+              {
+                type: "paragraph",
+                text: "이 문제는 단순히 API 호출 누락이 아니라 사용자 경험과 직접 연결되었습니다. 카메라 이동, 축척 변경, 회전 변경이 각각 독립 애니메이션으로 실행되면 앞선 애니메이션이 끊기고 마지막 애니메이션만 남아, 지도 이동이 부자연스럽게 보일 수 있었습니다."
+              },
+              { type: "subheading", text: "제약" },
+              {
+                type: "bullet-list",
+                items: [
+                  "HERE SDK는 새 카메라 애니메이션 실행 시 이전 카메라 애니메이션을 취소한다.",
+                  "2개 이상의 카메라 애니메이션 요청이 짧은 시간 안에 동시에 발생할 수 있다.",
+                  "마지막 요청만 남기는 방식으로는 의도한 카메라 상태 전환을 자연스럽게 표현하기 어렵다.",
+                  "SDK별 API 차이를 상위 모듈로 노출하지 않아야 한다."
+                ]
+              },
+              { type: "subheading", text: "해결" },
+              {
+                type: "paragraph",
+                text: "카메라 애니메이션 요청을 즉시 HERE SDK에 전달하지 않고, 이전 요청과 현재 요청을 병합해 최종 목표 카메라 상태를 계산하는 파이프라인을 설계했습니다. 핵심은 개별 애니메이션을 각각 실행하는 것이 아니라, 현재까지 요청된 카메라 상태를 `TargetCameraState`로 합성한 뒤 하나의 애니메이션으로 실행하는 것이었습니다."
+              },
+              {
+                type: "code-block",
+                language: "kotlin",
+                code: "data class TargetCameraState(\n    val lat: Double,\n    val lng: Double,\n    val bearing: Double,\n    val pitch: Double,\n    val zoomLevel: Double,\n    val anim: CameraAnimation,\n)\n\nprivate val targetState: AtomicReference<TargetCameraState>\nprivate val payload: StateFlow<CameraAnimation>\n\ninit {\n    mainScope.launch {\n        payload.collectLatest { animation ->\n            // handle camera animation\n        }\n    }\n}"
+              },
+              {
+                type: "paragraph",
+                text: "각 카메라 요청은 독립 애니메이션으로 바로 실행되지 않고, `targetState`에 누적된 최신 목표 상태와 병합됩니다. 이후 `StateFlow`를 통해 카메라 애니메이션 payload를 전달하고, 처리부에서는 병합된 목표 상태를 기준으로 HERE SDK 카메라 애니메이션을 실행하도록 구성했습니다."
+              },
+              {
+                type: "paragraph",
+                text: "이 구조를 통해 여러 요청이 짧은 시간 안에 발생해도 이전 요청의 의미가 완전히 사라지지 않고, 현재 요청과 합쳐진 하나의 목표 카메라 상태로 반영될 수 있도록 했습니다."
+              },
+              { type: "subheading", text: "결과" },
+              {
+                type: "paragraph",
+                text: "동시에 발생하는 여러 카메라 애니메이션 요청을 하나의 목표 상태로 병합해 처리할 수 있게 되었습니다. 그 결과 HERE SDK의 \"새 애니메이션이 이전 애니메이션을 취소하는\" 제약으로 인해 마지막 애니메이션만 반영되던 문제를 완화했고, 현위치 복귀나 경로 안내 중 카메라 갱신이 더 부드럽게 이어지도록 만들 수 있었습니다."
+              }
+            ]
+          },
+          {
+            title: "3. 지도 표시 모듈 Maven 배포 환경 구축",
+            blocks: [
+              { type: "subheading", text: "배경" },
+              {
+                type: "paragraph",
+                text: "HERE SDK 기반 지도 표시 모듈은 단일 앱 내부 코드로만 관리하기보다, 다른 앱 또는 PoC 환경에서도 재사용할 수 있는 형태로 관리할 필요가 있었습니다. 특히 3rd-party SDK 적용 가능성을 비교하고 검증하는 프로젝트에서는 지도 표시 모듈을 앱과 분리해 배포할 수 있어야 실험과 통합 비용을 줄일 수 있습니다."
+              },
+              { type: "subheading", text: "문제" },
+              {
+                type: "paragraph",
+                text: "지도 표시 모듈이 앱 프로젝트에 직접 포함되어 있으면, 다른 프로젝트에서 동일한 구현체를 검증할 때 코드 복사나 프로젝트 구조 변경이 필요합니다. 이 방식은 모듈 버전 관리가 어렵고, SDK 구현체가 변경될 때 각 앱 프로젝트에 수정 사항을 일관되게 반영하기도 어렵습니다."
+              },
+              { type: "subheading", text: "해결" },
+              {
+                type: "paragraph",
+                text: "지도 표시 모듈을 Maven artifact로 배포할 수 있도록 Gradle 기반 배포 환경을 구성했습니다. 모듈의 외부 공개 인터페이스, SDK 의존성, artifact metadata를 정리하고, 앱 프로젝트에서는 Maven dependency로 지도 표시 모듈을 참조할 수 있도록 구성했습니다. 이를 통해 앱 프로젝트는 지도 표시 구현체의 내부 구조를 직접 포함하지 않고, 버전이 명시된 모듈 의존성으로 HERE SDK 기반 지도 표시 기능을 사용할 수 있게 했습니다."
+              },
+              { type: "subheading", text: "결과" },
+              {
+                type: "paragraph",
+                text: "HERE SDK 기반 지도 표시 모듈을 앱 코드와 분리해 재사용 가능한 단위로 관리할 수 있게 되었습니다. 또한 PoC 과정에서 구현체 변경 사항을 Maven artifact 버전으로 관리할 수 있어, 앱 통합과 검증 과정의 반복 비용을 줄일 수 있는 기반을 마련했습니다."
+              }
+            ]
+          },
+          {
+            title: "프로젝트 결과",
+            blocks: [
+              {
+                type: "paragraph",
+                text: "이 프로젝트를 통해 HERE SDK를 활용한 Android 내비게이션 앱 개발 가능성을 검증했습니다. 단순히 SDK 기능을 앱에 연결하는 수준을 넘어서, 기존 Mapbox 기준 인터페이스와의 호환성, HERE SDK 카메라 애니메이션 제약 대응, 모듈 배포 구조까지 함께 설계했습니다."
+              },
+              {
+                type: "paragraph",
+                text: "그 결과 3rd-party 내비게이션 SDK를 검토할 때 필요한 핵심 기반인 SDK 추상화, 부드러운 카메라 애니메이션 처리, 모듈 재사용 구조를 확보할 수 있었습니다."
               }
             ]
           }
         ] satisfies ProjectDetailSection[]
       },
       en: {
-        title: "3rd SDK Navigation App Development",
-        cardSummary: "A navigation proof of concept built with HERE SDK.",
+        title: "HERE SDK-based Third-party Navigation PoC",
+        cardSummary: "A HERE SDK navigation app proof of concept.",
         detailSummary:
-          "A proof-of-concept project exploring navigation app development on top of HERE SDK.",
-        detailsAvailable: false,
+          "A proof-of-concept project that designed a HERE SDK-based map display module and integrated it into an Android navigation app to validate third-party navigation SDK adoption.",
+        detailsAvailable: true,
         organization: "Hyundai AutoEver",
         period: "2026.03 - Present",
-        stack: ["Kotlin", "Android", "HERE SDK"],
+        stack: ["Kotlin", "Android", "HERE SDK", "Maven"],
         highlights: [
-          "Navigation development with HERE SDK",
-          "Leading the map display module",
-          "Setting up Maven distribution for the map display module"
+          "Designed a HERE SDK implementation compatible with the Mapbox-oriented map display interface",
+          "Designed a camera request merge pipeline for concurrent animation requests",
+          "Set up Maven distribution for the map display module"
         ],
-        detailSections: [] satisfies ProjectDetailSection[]
+        detailSections: [
+          {
+            title: "Overview",
+            blocks: [
+              {
+                type: "paragraph",
+                text: "This PoC validated whether a navigation app could be developed with a third-party navigation SDK instead of Hyundai AutoEver's in-house navigation engine. The existing project was centered around a Mapbox Maps SDK-based map display interface, so the key goal was to preserve that structure while designing a HERE SDK implementation and integrating it into the Android navigation app."
+              },
+              {
+                type: "paragraph",
+                text: "I led development of the HERE SDK-based map display module, including the implementation design for absorbing SDK differences, improvements to the camera animation merge pipeline, and the Maven distribution setup."
+              }
+            ]
+          },
+          {
+            title: "Responsibilities",
+            blocks: [
+              {
+                type: "bullet-list",
+                items: [
+                  "Developed the HERE SDK-based navigation map display module",
+                  "Designed a HERE SDK implementation for a Mapbox Maps SDK-oriented interface",
+                  "Designed a camera request merge pipeline around HERE SDK camera animation constraints",
+                  "Set up Maven distribution for the map display module"
+                ]
+              }
+            ]
+          },
+          {
+            title: "Tech Stack",
+            blocks: [
+              {
+                type: "bullet-list",
+                items: ["Kotlin", "Android", "HERE SDK", "Maven"]
+              }
+            ]
+          },
+          {
+            title: "Key Outcomes",
+            blocks: [
+              {
+                type: "bullet-list",
+                items: [
+                  "Kept the existing Mapbox-centered map display interface while making the HERE SDK implementation replaceable",
+                  "Merged simultaneous camera animation requests into a target camera state for smoother map movement",
+                  "Set up Maven artifact distribution so the map display module could be reused outside the Android app"
+                ]
+              }
+            ]
+          },
+          {
+            title: "1. Designing a HERE SDK Implementation for the Mapbox-oriented Interface",
+            blocks: [
+              { type: "subheading", text: "Background" },
+              {
+                type: "paragraph",
+                text: "The project goal was not to build a new app tightly coupled to one SDK, but to validate a structure where multiple third-party navigation SDKs could be applied. Because the existing map display module used an interface defined around Mapbox Maps SDK, the upper application layer needed to keep the same calling pattern even after introducing HERE SDK."
+              },
+              { type: "subheading", text: "Problem" },
+              {
+                type: "paragraph",
+                text: "Mapbox Maps SDK and HERE SDK differ in their map objects, camera state models, rendering lifecycles, and event handling. If the app code exposed SDK APIs directly, adopting HERE SDK would require changes throughout upper modules, and the same cost would repeat when evaluating another SDK later."
+              },
+              {
+                type: "paragraph",
+                text: "The core challenge was therefore not just calling HERE SDK features, but absorbing the API differences between the existing Mapbox-oriented interface and HERE SDK inside the implementation."
+              },
+              { type: "subheading", text: "Solution" },
+              {
+                type: "paragraph",
+                text: "I kept the existing map display interface and designed a HERE SDK-specific implementation that translates SDK-level differences internally."
+              },
+              {
+                type: "code-block",
+                language: "text",
+                code: "Application / Navigation Logic\n        |\n        v\nMap Display Interface\n        |\n        v\nHERE SDK Implementation\n        |\n        v\nHERE SDK"
+              },
+              {
+                type: "paragraph",
+                text: "The upper layer continues to request map movement, zoom changes, and map object control through the existing interface. The HERE SDK implementation converts those requests into HERE SDK camera and map API calls. This keeps the navigation logic separated from the details of a specific SDK."
+              },
+              { type: "subheading", text: "Result" },
+              {
+                type: "paragraph",
+                text: "This created a foundation for applying HERE SDK without significantly changing the existing Mapbox-oriented structure. It also separated SDK-specific implementations, making it possible to compare other third-party SDKs against the same interface after the PoC."
+              }
+            ]
+          },
+          {
+            title: "2. Designing a Camera Animation Merge Pipeline",
+            blocks: [
+              { type: "subheading", text: "Background" },
+              {
+                type: "paragraph",
+                text: "In a navigation map, the center coordinate, zoom, bearing, and pitch change frequently in response to user interaction and location updates. These values are managed as separate camera states, but the user experience should feel like one continuous camera animation."
+              },
+              {
+                type: "paragraph",
+                text: "For example, returning to the current location is not only a center-coordinate change; it should update the map center, zoom, and bearing together to feel natural. During route guidance, location updates, user interaction, and guidance-state changes can also happen within a short time window, causing multiple camera animation requests to overlap."
+              },
+              { type: "subheading", text: "Problem" },
+              {
+                type: "paragraph",
+                text: "HERE SDK cancels the previous camera animation when a new camera animation starts. When several camera animation requests occur almost simultaneously, the earlier animation can be interrupted and only the last request may be reflected successfully."
+              },
+              {
+                type: "paragraph",
+                text: "This was not just a missed API-call issue; it directly affected the user experience. If map movement, zoom, and bearing changes run as separate animations, earlier animations can be cut off and only the last animation remains, making the map movement feel unnatural."
+              },
+              { type: "subheading", text: "Constraints" },
+              {
+                type: "bullet-list",
+                items: [
+                  "HERE SDK cancels the previous camera animation when a new camera animation starts.",
+                  "Two or more camera animation requests can occur within a short time window.",
+                  "Keeping only the last request is not enough to express the intended camera state transition naturally.",
+                  "SDK-specific API differences should not leak into upper modules."
+                ]
+              },
+              { type: "subheading", text: "Solution" },
+              {
+                type: "paragraph",
+                text: "Instead of forwarding camera animation requests immediately to HERE SDK, I designed a pipeline that merges the previous request and the current request to compute the final target camera state. The key was to compose the requested camera state into `TargetCameraState` and run one animation, rather than executing each animation independently."
+              },
+              {
+                type: "code-block",
+                language: "kotlin",
+                code: "data class TargetCameraState(\n    val lat: Double,\n    val lng: Double,\n    val bearing: Double,\n    val pitch: Double,\n    val zoomLevel: Double,\n    val anim: CameraAnimation,\n)\n\nprivate val targetState: AtomicReference<TargetCameraState>\nprivate val payload: StateFlow<CameraAnimation>\n\ninit {\n    mainScope.launch {\n        payload.collectLatest { animation ->\n            // handle camera animation\n        }\n    }\n}"
+              },
+              {
+                type: "paragraph",
+                text: "Each camera request is not executed immediately as an independent animation. Instead, it is merged with the latest target state accumulated in `targetState`. The camera animation payload is then delivered through `StateFlow`, and the handler executes the HERE SDK camera animation using the merged target state."
+              },
+              {
+                type: "paragraph",
+                text: "With this structure, even when multiple requests occur within a short time window, the meaning of earlier requests is not completely lost. It can be reflected as one target camera state merged with the current request."
+              },
+              { type: "subheading", text: "Result" },
+              {
+                type: "paragraph",
+                text: "The module could process simultaneous camera animation requests by merging them into one target state. This reduced the impact of HERE SDK's constraint where a new animation cancels the previous one, and made camera updates during current-location return or route guidance flow more smoothly."
+              }
+            ]
+          },
+          {
+            title: "3. Setting Up Maven Distribution for the Map Display Module",
+            blocks: [
+              { type: "subheading", text: "Background" },
+              {
+                type: "paragraph",
+                text: "The HERE SDK-based map display module needed to be managed as a reusable unit rather than only as code inside a single app. In a project comparing and validating third-party SDK adoption, separating the map display module from the app reduces experimentation and integration cost."
+              },
+              { type: "subheading", text: "Problem" },
+              {
+                type: "paragraph",
+                text: "If the map display module is directly included in the app project, validating the same implementation in another project requires code copying or project-structure changes. That approach makes version management difficult and makes it harder to apply implementation changes consistently across app projects."
+              },
+              { type: "subheading", text: "Solution" },
+              {
+                type: "paragraph",
+                text: "I configured a Gradle-based distribution setup so the map display module could be published as a Maven artifact. I organized the module's public interface, SDK dependencies, and artifact metadata, and configured the app project to consume the map display module as a Maven dependency. This allowed the app to use the HERE SDK-based map display functionality through a versioned module dependency instead of directly embedding the implementation internals."
+              },
+              { type: "subheading", text: "Result" },
+              {
+                type: "paragraph",
+                text: "The HERE SDK-based map display module became manageable as a reusable unit separated from the app code. During the PoC, implementation changes could be tracked through Maven artifact versions, reducing repeated integration and validation work."
+              }
+            ]
+          },
+          {
+            title: "Project Result",
+            blocks: [
+              {
+                type: "paragraph",
+                text: "This project validated the feasibility of Android navigation app development with HERE SDK. Beyond simply connecting SDK features to the app, it addressed compatibility with the existing Mapbox-oriented interface, HERE SDK camera animation constraints, and module distribution structure."
+              },
+              {
+                type: "paragraph",
+                text: "As a result, the PoC established the core foundation needed to evaluate third-party navigation SDKs: SDK abstraction, smoother camera animation handling, and reusable module distribution."
+              }
+            ]
+          }
+        ] satisfies ProjectDetailSection[]
       }
     }
   },
