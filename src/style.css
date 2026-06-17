@@ -283,32 +283,9 @@ code {
   font-size: 1.1rem;
 }
 
-.project-section h3 {
-  margin: 18px 0 8px;
-  font-size: 1rem;
-}
-
 .project-section p {
   margin: 0 0 12px;
   line-height: 1.65;
-}
-
-.project-section pre {
-  overflow-x: auto;
-  margin: 0 0 16px;
-  padding: 16px;
-  border: 1px solid var(--card-rule);
-  border-radius: 8px;
-  background: rgba(15, 23, 42, 0.04);
-  line-height: 1.55;
-}
-
-.project-section pre code {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font-size: 0.9rem;
 }
 
 .project-figure {

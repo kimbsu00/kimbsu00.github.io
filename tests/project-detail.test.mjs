@@ -155,34 +155,6 @@ test("project detail renders markdown-style inline code spans", () => {
   assert.doesNotMatch(html, /`HandlerThread`/);
 });
 
-test("project detail renders subheadings and fenced code blocks", () => {
-  const html = renderProjectDetail({
-    locale: "ko",
-    title: "Code Block Test",
-    summary: "코드 블록을 포함합니다.",
-    detailsAvailable: true,
-    organization: "개인",
-    period: "2026",
-    detailSections: [
-      {
-        title: "구현",
-        blocks: [
-          { type: "subheading", text: "해결" },
-          {
-            type: "code-block",
-            language: "kotlin",
-            code: "data class TargetCameraState(\n    val zoomLevel: Double,\n)"
-          }
-        ]
-      }
-    ]
-  });
-
-  assert.match(html, /<h3>해결<\/h3>/);
-  assert.match(html, /<pre><code class="language-kotlin">data class TargetCameraState/);
-  assert.match(html, /val zoomLevel: Double/);
-});
-
 test("project detail renders the english fallback note without abridged detail sections", () => {
   const html = renderProjectDetail({
     locale: "en",

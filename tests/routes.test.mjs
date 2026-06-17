@@ -34,23 +34,6 @@ test("getProject keeps the PAD-AI english locale available as a fallback-only pa
   assert.deepEqual(project.detailSections, []);
 });
 
-test("getProject exposes full english detail for the third-party navigation PoC", () => {
-  const project = getProject("third-sdk-navigation-app", "en");
-
-  assert.ok(project);
-  assert.equal(project.detailsAvailable, true);
-  assert.equal(project.title, "HERE SDK-based Third-party Navigation PoC");
-  assert.ok(project.detailSections.length > 0);
-  assert.equal(project.detailSections[0]?.title, "Overview");
-  assert.match(
-    project.detailSections
-      .flatMap((section) => section.blocks)
-      .map((block) => ("text" in block ? block.text : "code" in block ? block.code : ""))
-      .join("\n"),
-    /TargetCameraState/
-  );
-});
-
 test("abridged english project locales stay marked as unavailable", () => {
   for (const slug of [
     "connect-s-l-navigation-app",
