@@ -25,8 +25,12 @@ export function getProject(slug: string, locale: Locale) {
         switch (block.type) {
           case "paragraph":
             return { ...block };
+          case "subheading":
+            return { ...block };
           case "bullet-list":
             return { type: block.type, items: [...block.items] };
+          case "code-block":
+            return { ...block };
           case "image":
             return { type: block.type, image: { ...block.image } };
           case "image-row":
