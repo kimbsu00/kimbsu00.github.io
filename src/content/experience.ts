@@ -1,12 +1,39 @@
 export const experience = [
   {
-    period: "2024.09 ~ 재직중",
+    period: "2026.07 ~ 재직중",
+    locales: {
+      ko: {
+        company: "현대오토에버",
+        role: "Android Framework 개발",
+        summary:
+          "AOSP 기반 차량 인포테인먼트 시스템의 Android Framework 개발 조직에서 플랫폼 기능 개발과 시스템 레벨 이슈 대응을 담당하고 있습니다.",
+        highlights: [
+          "AOSP WindowManagerService 기반 화면/윈도우 정책 개발",
+          "차량 인포테인먼트 환경의 Android Framework 기능 개발",
+          "WindowManagerService 관련 시스템 레벨 이슈 분석 및 대응"
+        ]
+      },
+      en: {
+        company: "Hyundai AutoEver",
+        role: "Android Framework Development",
+        summary:
+          "Working on Android Framework development for AOSP-based vehicle infotainment systems, focusing on platform features and system-level issue analysis.",
+        highlights: [
+          "AOSP WindowManagerService-based screen and window policy development",
+          "Android Framework feature development for vehicle infotainment environments",
+          "System-level issue analysis and handling around WindowManagerService"
+        ]
+      }
+    }
+  },
+  {
+    period: "2024.09 ~ 2026.06",
     locales: {
       ko: {
         company: "현대오토에버",
         role: "차량용 내비게이션 개발",
         summary:
-          "2026년도 양산 차량용 OEM 내비게이션 지도 표시 모듈 개발, XP2 플랫폼 내비게이션 엔진 마이그레이션, 3rd SDK 내비게이션 엔진 개발에 참여하고 있습니다.",
+          "2026년도 양산 차량용 OEM 내비게이션 지도 표시 모듈 개발, XP2 플랫폼 내비게이션 엔진 마이그레이션, 3rd SDK 내비게이션 엔진 개발에 참여했습니다.",
         highlights: [
           "Connect-S/L 플랫폼 지도 표시 모듈 개발",
           "XP2 플랫폼 내비게이션 엔진 마이그레이션",
@@ -17,7 +44,7 @@ export const experience = [
         company: "Hyundai AutoEver",
         role: "In-vehicle Navigation Development",
         summary:
-          "Working across OEM navigation map rendering, XP2 engine migration, and third-party SDK navigation proof-of-concept work.",
+          "Worked across OEM navigation map rendering, XP2 engine migration, and third-party SDK navigation proof-of-concept work.",
         highlights: [
           "Connect-S/L map display module development",
           "XP2 navigation engine migration",
