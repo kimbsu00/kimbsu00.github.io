@@ -9,7 +9,7 @@ test("renderHome includes locale switcher, hero copy, and featured projects", ()
   assert.match(html, /section-label/);
   assert.match(html, /hero-notes/);
   assert.match(html, /Software Engineer/);
-  assert.match(html, /본 페이지는 한국어로 작성된 포트폴리오/);
+  assert.match(html, /WindowManagerService 중심의 화면\/윈도우 정책/);
   assert.match(html, /주요 프로젝트/);
   assert.match(html, /경력/);
   assert.match(html, /연락처/);

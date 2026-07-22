@@ -4,13 +4,13 @@ export const siteContent = {
     englishName: "ByeongSu Kim",
     role: "Software Engineer",
     heroSummary:
-      "차량용 내비게이션과 Android 제품 개발 경험을 바탕으로, 구조 설계와 성능 개선을 함께 다루는 개발자입니다.",
+      "AOSP Android Framework와 차량용 내비게이션 개발 경험을 바탕으로, 구조 설계와 성능 개선을 함께 다루는 개발자입니다.",
     portfolioNote:
-      "본 페이지는 한국어로 작성된 포트폴리오를 바탕으로 구성되었으며, 영어 페이지는 같은 내용을 간결하게 옮긴 버전입니다.",
+      "현재는 AOSP 기반 차량 인포테인먼트 Android Framework 개발을 담당하며, WindowManagerService 중심의 화면/윈도우 정책과 시스템 레벨 이슈를 다루고 있습니다.",
     focusPoints: [
-      "현대오토에버 차량용 내비게이션 개발",
-      "다이닝코드 Android 앱 기능 개발 및 구조 개선",
-      "PAD-AI 데이터 수집 앱 개발"
+      "AOSP WindowManagerService 기반 Android Framework 개발",
+      "차량용 내비게이션 지도 표시 모듈 및 엔진 마이그레이션",
+      "Android 앱 기능 개발 및 구조 개선"
     ],
     availabilityLabel: "한국어에서만 더 자세한 설명을 볼 수 있습니다.",
     sectionLabels: {
@@ -45,13 +45,13 @@ export const siteContent = {
     englishName: "ByeongSu Kim",
     role: "Software Engineer",
     heroSummary:
-      "An engineer with Android product and in-vehicle navigation experience, focused on system structure, rendering performance, and delivery quality.",
+      "An engineer with AOSP Android Framework and in-vehicle navigation experience, focused on system design and performance improvement.",
     portfolioNote:
-      "This site mirrors the current Korean portfolio. The English version stays aligned with the same verified project scope in a more concise form.",
+      "Currently working on AOSP-based Android Framework development for vehicle infotainment systems, with emphasis on WindowManagerService screen/window policy and system-level issue analysis.",
     focusPoints: [
-      "In-vehicle navigation development at Hyundai AutoEver",
-      "Android product work and architecture cleanup at DiningCode",
-      "PAD-AI data collection app development"
+      "AOSP WindowManagerService-based Android Framework development",
+      "In-vehicle navigation map display and engine migration",
+      "Android product work and architecture cleanup"
     ],
     availabilityLabel: "Available in Korean only",
     sectionLabels: {
